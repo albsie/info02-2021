@@ -10,6 +10,40 @@
 
       Nach jedem Befehl muss ein Semikolon (;) stehen.
 
+      evtl. DokumentRoot verschieben in http.d.conf
+      DocumentRoot "C:\xampp\htdocs"
+      <Directory "C:\xampp\htdocs">
+
+
 */
 
+/*
+Mehrzeiliger Kommentar
+*/
+
+// Einzeiliger Kommentar
+# Einzeiliger Kommentar
+
+// Ausgabe auf dem Bildschirm
+echo 'Test';
+
+// PHP kann HTML, CSS und JavaScript ausgeben
+echo '<h1 style="color: red">Hallo Info 2</h1>';
+echo '<script type="text/javascript">
+  alert("Hallo Welt");
+</script>';
+
+// PHP wird im Quellcode nicht angezeigt
+
+// PHP Dateien können sowohl HTML als auch JS Bestandteile enthalten
  ?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>mein erstes PHP Script</title>
+  </head>
+  <body>
+    <?php echo '<h2 style="color: blue">First PHP Lesson</h2>'; ?>
+  </body>
+</html>
