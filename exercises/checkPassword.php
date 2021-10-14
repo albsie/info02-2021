@@ -19,20 +19,22 @@
    <body>
     <h1>Meine erste Loginseite.</h1>
       <main>
-        <form class="row g-3">
+        <?php if (isset($_GET['error'])): ?>
+          <h2 style="color:red">Die Anmeldedaten sind nicht korrekt!</h2>
+        <?php endif; ?>
+        <form class="row g-3" action="output.php" method="post">
           <div class="col-auto">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="example@php.de">
+            <input type="email" class="form-control" id="email" placeholder="example@php.de" name="email">
           </div>
           <div class="col-auto">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" placeholder="Password" name="password">
           </div>
           <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
           </div>
         </form>
       </main>
-
    </body>
  </html>
