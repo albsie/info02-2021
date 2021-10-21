@@ -8,9 +8,9 @@ $limit = 5;
 // Einfachverzweigung mit if/else
 
 if ($guthaben > $limit) {
-  echo "alles ok";
+    echo "alles ok";
 } else {
-  echo "Guthaben bitte aufladen";
+    echo "Guthaben bitte aufladen";
 }
 echo "<br>";
 // Mehrfachverzweigung mit switch/case
@@ -27,4 +27,6 @@ switch ($guthaben) {
 }
 echo "<br>";
 
-?>
+if (true) {
+    echo "Hallo";
+}

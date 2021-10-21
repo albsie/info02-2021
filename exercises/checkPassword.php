@@ -19,9 +19,12 @@
    <body>
     <h1>Meine erste Loginseite.</h1>
       <main>
+
         <?php if (isset($_GET['error'])): ?>
+          <?php if ($_GET['error'] === 'login'): ?>
           <h2 style="color:red">Die Anmeldedaten sind nicht korrekt!</h2>
         <?php endif; ?>
+          <?php endif; ?>
         <form class="row g-3" action="output.php" method="post">
           <div class="col-auto">
             <label for="email" class="form-label">Email</label>

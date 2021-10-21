@@ -1,4 +1,5 @@
 <?php
+
 // Variablen in php
 
 // Primitive Datentypen
@@ -38,17 +39,16 @@ echo '</pre>';
 
 //die($text); // Bricht die Scriptausführung ab und kann als Parameter eine Information enthalten.
 
-function dd($var) {
-  if (is_array($var)){
-    echo '<pre>';
-    print_r($var);
-    echo '</pre>';
-  } else {
-    var_dump($var);
-  }
-  die();
+function dd($var)
+{
+    if (is_array($var)) {
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    } else {
+        var_dump($var);
+    }
+    die();
 }
 
 dd($assocArray);
-
- ?>
