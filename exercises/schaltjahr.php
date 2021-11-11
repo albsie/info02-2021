@@ -53,7 +53,7 @@ if (isset($_POST['year'])) {
          <form method="post">
            <div class="mb-3">
              <label for="year" class="form-label">Email address</label>
-             <input type="number" class="form-control" id="year" placeholder="Schaltjahr" name="year">
+             <input type="number" class="form-control" id="year" placeholder="Schaltjahr" name="year" value="<?=isset($year) ? $year : ''?>">
            </div>
            <button type="submit" class="btn btn-primary">Submit</button>
          </form>
