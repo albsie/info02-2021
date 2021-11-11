@@ -4,6 +4,13 @@
 
 // INFO: Jedes Schaltjahr ist ein Jahr, das durch 4 teilbar ist.
 
+$isLeapYear = null;
+$year = null;
+
+if (isset($_POST['year'])) {
+    $year = $_POST['year'];
+    $isLeapYear = $year % 4 === 0 ? true : false;
+}
 
  ?>
 
@@ -23,6 +30,17 @@
        input {
          max-width: 25%;
        }
+       .done{
+         background-color: lightgreen;
+       }
+       .error{
+         background-color: red;
+       }
+       .msg{
+         margin-top: 5vh;
+         font-size: 16pt;
+         padding: 2vh 2vw;
+       }
      </style>
    </head>
    <body>
@@ -35,10 +53,15 @@
          <form method="post">
            <div class="mb-3">
              <label for="year" class="form-label">Email address</label>
-             <input type="number" class="form-control" id="year" placeholder=""="Schaltjahr">
+             <input type="number" class="form-control" id="year" placeholder="Schaltjahr" name="year">
            </div>
            <button type="submit" class="btn btn-primary">Submit</button>
          </form>
+         <?php if ($isLeapYear === true): ?>
+          <div class="msg done">Das Jahr <?=$year?> ist ein Schaltjahr.</div>
+         <?php elseif ($isLeapYear === false): ?>
+          <div class="msg error">Das Jahr <?=$year?> ist kein Schaltjahr.</div>
+         <?php endif ?>
        </main>
        <footer></footer>
      </div>
