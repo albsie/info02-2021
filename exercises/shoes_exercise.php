@@ -105,7 +105,7 @@ $data = [
         'sole' => 'outside',
         'min_size' => 30,
         'max_size' => 45,
-        'color' => ['white', 'grey', 'black', 'braun'],
+        'color' => ['white', 'grey', 'black', 'brown'],
         'price' => 39.99,
         'stock' => 249,
         'gender' => 'm'
@@ -116,7 +116,7 @@ $data = [
         'sole' => 'outside',
         'min_size' => 28,
         'max_size' => 43,
-        'color' => ['white', 'grey', 'black', 'braun'],
+        'color' => ['white', 'grey', 'black', 'brown'],
         'price' => 39.99,
         'stock' => 179,
         'gender' => 'w'
@@ -146,15 +146,39 @@ $data = [
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(10, 1fr);
+        grid-template-columns: 0.8fr 1.5fr repeat(8, 1fr);
       }
+
+      main ul:first-of-type {
+      margin-top: 5vh;
+      }
+
+      main ul:first-of-type li{
+      font-weight: bold;
+      font-size: 1.1em;
+      }
+
       li {
         border: 1px solid black;
         border-left: 0;
         margin-bottom: -1px;
+        padding-left: 5px;
       }
+
       li:first-of-type {
         border-left: 1px solid black;
+      }
+
+      .stock-success{
+        background-color: green;
+      }
+
+      .stock-warning{
+        background-color: orange;
+      }
+      
+      .stock-failed{
+        background-color: red;
       }
 		</style>
  	</head>
@@ -170,43 +194,51 @@ $data = [
       </nav>
      </header>
      <main class="container">
-       <!-- Content -->
-       <ul>
-         <li>12</li>
-         <li>32</li>
-         <li>12</li>
-         <li>33</li>
-         <li>22</li>
-         <li>12</li>
-         <li>55</li>
-         <li>12</li>
-         <li>df</li>
-         <li>23</li>
-       </ul>
-       <ul>
-         <li>12</li>
-         <li>32</li>
-         <li>12</li>
-         <li>33</li>
-         <li>22</li>
-         <li>12</li>
-         <li>55</li>
-         <li>12</li>
-         <li>df</li>
-         <li>23</li>
-       </ul>
-       <ul>
-         <li>12</li>
-         <li>32</li>
-         <li>12</li>
-         <li>33</li>
-         <li>22</li>
-         <li>12</li>
-         <li>55</li>
-         <li>12</li>
-         <li>df</li>
-         <li>23</li>
-       </ul>
+       <!-- Überschrift -->
+    <ul>
+      <li>Nummer</li>
+      <li>Schuh</li>
+      <li>Methode</li>
+      <li>Typ</li>
+      <li>kleinste Größe</li>
+      <li>maximale Größe</li>
+      <li>Farben</li>
+      <li>Preis</li>
+      <li>Lagerbestand</li>
+      <li>Mann/Frau</li>
+    </ul>
+
+
+<?php foreach ($data as $key => $value): ?>
+    <ul>
+      <li><?= $key + 1?></li>
+      <li><?= $value['name']?></li>
+      <li><?= $value['type']?></li>
+      <li><?= $value['sole']?></li>
+      <li><?= $value['min_size']?></li>
+      <li><?= $value['max_size']?></li>
+      <li>
+        <?php foreach ($value['color'] as $key => $color): ?>
+            <div style="background-color: <?= $color === 'black' ? 'white' : ($color === 'white' ? 'black' : $color);?>; color:<?= $color === 'white' || $color === 'blue' ? 'white' : 'black' ?>"><?= $color?></div>
+        <?php endforeach; ?>
+      </li>
+      <li><?= $value['price']?></li>
+      
+      <?php
+      $class = null;
+      if ($value['stock'] > 50) {
+          $class = 'stock-success';
+      } elseif ($value['stock'] >= 10) {
+          $class = 'stock-warning';
+      } else {
+          $class = 'stock-failed';
+      }?>
+      
+      <li class="<?= $class?>"><?= $value['stock']?></li>
+      <li><?= $value['gender'] === 'm' ? 'Mann' : 'Frau'?></li>
+    </ul>
+<?php endforeach; ?>
+
      </main>
      <footer>
        <nav class="navbar navbar-dark bg-primary">
