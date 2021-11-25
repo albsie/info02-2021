@@ -7,6 +7,9 @@ $database = "todo_list";
 
 $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
 
+if (isset($_POST['register'])) {
+    var_dump($_POST);
+}
 
 ?>
 <!DOCTYPE html>
@@ -34,13 +37,13 @@ header{
   </header>
   <main class="container">
     <section id="input">
-      <form class="row g-3">
+      <form class="row g-3" method="post">
         <div class="col-auto">
           <label for="todo" class="visually-hidden">Mein Todo</label>
-          <input type="text" class="form-control" id="todo" placeholder="waschen">
+          <input type="text" class="form-control" id="todo" placeholder="waschen" name="name">
         </div>
         <div class="col-auto">
-          <select class="form-select" aria-label="Default select example">
+          <select class="form-select" aria-label="Default select example" name="priority">
             <option selected>Wähle...</option>
             <option value="niedrig">Niedrig</option>
             <option value="mittel">Mittel</option>
@@ -48,7 +51,7 @@ header{
           </select>
         </div>
         <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-3">Speichern</button>
+          <button type="submit" name="register" class="btn btn-primary mb-3">Speichern</button>
         </div>
       </form>
     </section>
