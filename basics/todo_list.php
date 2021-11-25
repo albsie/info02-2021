@@ -8,8 +8,15 @@ $database = "todo_list";
 $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
 
 if (isset($_POST['register'])) {
+    $name = $_POST['name'];
+    $priority = $_POST['priority'];
+
+    // 1. Speichere das Todo in die DB;
+    // 2. Mache eine Ausgabe der Daten in das output Element.
+
     var_dump($_POST);
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -57,6 +64,8 @@ header{
     </section>
     <section id="output">
 
+      <!-- output todos-->
+      
     </section>
   </main>
   <footer></footer>
