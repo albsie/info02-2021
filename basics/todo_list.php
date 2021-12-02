@@ -7,13 +7,13 @@ $database = "todo_list";
 $error = "";
 $success = false;
 $priorityDatas = ["niedrig","mittel","hoch"];
+$selectAll = "SELECT * FROM tasks";
 
 $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
 
 if (isset($_POST['register'])) {
     $name = $_POST['name'];
     $priority = $_POST['priority']; // niedrig mittel hoch
-
 
     try {
         if (strlen($name) <= 3 || strlen($name) > 20) {
@@ -32,16 +32,16 @@ if (isset($_POST['register'])) {
     } catch (\Exception $e) {
         $error = $e->getMessage();
     }
-
-
-
-    // 2. Mache eine Ausgabe der Daten in das output Element.
-    // 3. Das Todo auf "done" setzen und optisch darstellen.
-    // 4. Lösche ein Todo
-
-    //var_dump($_POST);
 }
 
+  // 2. Mache eine Ausgabe der Daten in das output Element.
+    $querys = $pdo->prepare($selectAll);
+    $querys->execute();
+    $tasks = $querys->fetchAll();
+
+
+  // 3. Das Todo auf "done" setzen und optisch darstellen.
+  // 4. Lösche ein Todo
 
 ?>
 <!DOCTYPE html>
@@ -54,6 +54,27 @@ if (isset($_POST['register'])) {
 <style>
 header{
   margin-bottom: 5vh;
+}
+#input{
+  margin-top: 5vh;
+}
+#output{
+  margin-top: 5vh;
+}
+#output ul {
+  margin: 0;
+  padding: 0 0 0 5px;
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr 2fr 2fr;
+  border-bottom: 1px solid grey;
+}
+#output ul:first-of-type{
+  border-bottom: 2px solid grey;
+}
+
+#output ul:first-of-type li{
+  font-weight: bold;
 }
 </style>
   <title>Todo List</title>
@@ -101,8 +122,13 @@ header{
       </form>
     </section>
     <section id="output">
-
-      <!-- output todos-->
+      <ul>
+        <li>Nr.</li>
+        <li>Todo</li>
+        <li>Priorität</li>
+        <li>Erledigt</li>
+        <li>Löschen</li>
+      </ul>
 
     </section>
   </main>
