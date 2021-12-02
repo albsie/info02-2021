@@ -5,17 +5,30 @@ $user = "root";
 $password = "";
 $database = "todo_list";
 $error = "";
+$success = false;
+$priorityDatas = ["niedrig","mittel","hoch"];
 
 $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
 
 if (isset($_POST['register'])) {
     $name = $_POST['name'];
-    $priority = $_POST['priority'];
+    $priority = $_POST['priority']; // niedrig mittel hoch
+
 
     try {
+        if (strlen($name) <= 3 || strlen($name) > 20) {
+            throw new Exception("Der Wert muss eine Länge zwischen 3 und 20 haben!");
+        }
+
+        if (!in_array($priority, $priorityDatas)) {
+            throw new Exception("Die Priorität darf nicht diesen Wert haben!");
+        }
+
         // 1. Speichere das Todo in die DB;
         $newTask = $pdo->prepare("INSERT INTO tasks (name, priority) VALUES (?,?)");
-        $newTask->execute([$name, $priority]);
+        if ($newTask->execute([$name, $priority])) {
+            $success = true;
+        }
     } catch (\Exception $e) {
         $error = $e->getMessage();
     }
@@ -56,11 +69,19 @@ header{
   </header>
   <main class="container">
     <section id="input">
+
       <?php if ($error !== ""): ?>
         <div class="alert alert-danger" role="alert">
         <?=$error ?>
         </div>
       <?php endif; ?>
+
+      <?php if ($success): ?>
+        <div class="alert alert-success" role="alert">
+        Das Todo wurde erfolgreich angelegt.
+        </div>
+      <?php endif; ?>
+
       <form class="row g-3" method="post">
         <div class="col-auto">
           <label for="todo" class="visually-hidden">Mein Todo</label>
