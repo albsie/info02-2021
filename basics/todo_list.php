@@ -67,14 +67,19 @@ header{
   list-style-type: none;
   display: grid;
   grid-template-columns: 1fr 3fr 2fr 2fr 2fr;
+  grid-template-rows: repeat(auto-fill, 50px);
   border-bottom: 1px solid grey;
 }
 #output ul:first-of-type{
   border-bottom: 2px solid grey;
 }
+#output ul li{
+  align-self: center;
+}
 
 #output ul:first-of-type li{
   font-weight: bold;
+  align-self: end;
 }
 </style>
   <title>Todo List</title>
@@ -130,6 +135,19 @@ header{
         <li>Löschen</li>
       </ul>
 
+    <?php foreach ($tasks as $key => $value): ?>
+      <ul>
+        <li><?=$key + 1 ?></li>
+        <li><?=$value['name']?></li>
+        <li><?=$value['priority']?></li>
+        <li>
+          <button type="button" class="btn btn-success">Success</button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-danger">Danger</button>
+        </li>
+      </ul>
+    <?php endforeach; ?>
     </section>
   </main>
   <footer></footer>
