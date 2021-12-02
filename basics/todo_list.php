@@ -4,6 +4,7 @@ $host = "localhost";
 $user = "root";
 $password = "";
 $database = "todo_list";
+$error = "";
 
 $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
 
@@ -11,10 +12,21 @@ if (isset($_POST['register'])) {
     $name = $_POST['name'];
     $priority = $_POST['priority'];
 
-    // 1. Speichere das Todo in die DB;
-    // 2. Mache eine Ausgabe der Daten in das output Element.
+    try {
+        // 1. Speichere das Todo in die DB;
+        $newTask = $pdo->prepare("INSERT INTO tasks (name, priority) VALUES (?,?)");
+        $newTask->execute([$name, $priority]);
+    } catch (\Exception $e) {
+        $error = $e->getMessage();
+    }
 
-    var_dump($_POST);
+
+
+    // 2. Mache eine Ausgabe der Daten in das output Element.
+    // 3. Das Todo auf "done" setzen und optisch darstellen.
+    // 4. Lösche ein Todo
+
+    //var_dump($_POST);
 }
 
 
@@ -44,6 +56,11 @@ header{
   </header>
   <main class="container">
     <section id="input">
+      <?php if ($error !== ""): ?>
+        <div class="alert alert-danger" role="alert">
+        <?=$error ?>
+        </div>
+      <?php endif; ?>
       <form class="row g-3" method="post">
         <div class="col-auto">
           <label for="todo" class="visually-hidden">Mein Todo</label>
@@ -65,7 +82,7 @@ header{
     <section id="output">
 
       <!-- output todos-->
-      
+
     </section>
   </main>
   <footer></footer>
