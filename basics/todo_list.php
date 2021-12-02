@@ -147,7 +147,7 @@ header{
     <?php foreach ($tasks as $key => $value): ?>
       <ul>
         <li><?=$key + 1 ?></li>
-        <li><?=$value['name']?></li>
+        <li><?=$value['done'] ? "<s>" . $value['name'] . "</s>" : $value['name']?></li>
         <li><?=$value['priority']?></li>
         <li>
           <form method="post">
