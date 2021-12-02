@@ -41,7 +41,16 @@ if (isset($_POST['register'])) {
 
 
   // 3. Das Todo auf "done" setzen und optisch darstellen.
+if (isset($_POST['done'])) {
+    var_dump($_POST['done']);
+}
+
+
   // 4. Lösche ein Todo
+
+  if (isset($_POST['delete'])) {
+      var_dump($_POST['delete']);
+  }
 
 ?>
 <!DOCTYPE html>
@@ -141,10 +150,14 @@ header{
         <li><?=$value['name']?></li>
         <li><?=$value['priority']?></li>
         <li>
-          <button type="button" class="btn btn-success">Success</button>
+          <form method="post">
+            <button type="submit" name="done" value="<?=$value['id']?>" class="btn btn-success">Erledigt</button>
+          </form>
         </li>
         <li>
-          <button type="button" class="btn btn-danger">Danger</button>
+          <form method="post">
+            <button type="submit" name="delete" value="<?=$value['id']?>" class="btn btn-danger">Löschen</button>
+          </form>
         </li>
       </ul>
     <?php endforeach; ?>
