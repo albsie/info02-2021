@@ -7,6 +7,7 @@ $database = "todo_list";
 $error = "";
 $success = false;
 $successUpdate = false;
+$successDelete = false;
 $priorityDatas = ["niedrig","mittel","hoch"];
 $selectAll = "SELECT * FROM tasks";
 
@@ -35,32 +36,51 @@ if (isset($_POST['register'])) {
     }
 }
 
-  // 2. Mache eine Ausgabe der Daten in das output Element.
-    $querys = $pdo->prepare($selectAll);
-    $querys->execute();
-    $tasks = $querys->fetchAll();
-
 
   // 3. Das Todo auf "done" setzen und optisch darstellen.
 if (isset($_POST['done'])) {
-    $updateTask = $pdo->prepare("UPDATE tasks SET done = 1 WHERE id = :id");
-    if ($updateTask->execute([':id' => $_POST['done']])) {
-        $successUpdate = true;
+    $id = $_POST['done'];
+    try {
+        var_dump($id);
+        if (!is_int($id) && $id <= 0) {
+            throw new Exception("Ein Fehler ist passiert");
+        }
+        $updateTask = $pdo->prepare("UPDATE tasks SET done = 1 WHERE id = :id");
+        if ($updateTask->execute([':id' => $id])) {
+            $successUpdate = true;
+        }
+    } catch (\Exception $e) {
+        $error = $e->getMessage();
     }
-    var_dump($_POST['done']);
 }
 
 
   // 4. Lösche ein Todo
 
   if (isset($_POST['delete'])) {
-      var_dump($_POST['delete']);
+      $id = $_POST['delete'];
+      try {
+          if (!is_int($id) && $id <= 0) {
+              throw new Exception("Ein Fehler ist passiert");
+          }
+          $deleteTasks = $pdo->prepare("DELETE FROM tasks WHERE id = :id");
+          if ($deleteTasks->execute([':id' => $id])) {
+              $successDelete = true;
+          }
+      } catch (\Exception $e) {
+          $error = $e->getMessage();
+      }
   }
 
   // 5. überprüfft ob die id ein int ist
   // 6. Wenn ein Task auf done gesetzt ist, dann soll der Button verschwinden.
   // 7. Zeige eine Status Meldung an ob der Eintrag auf erledigt gesetzt sowie gelöscht wurde.
 
+
+  // 2. Mache eine Ausgabe der Daten in das output Element.
+    $querys = $pdo->prepare($selectAll);
+    $querys->execute();
+    $tasks = $querys->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
