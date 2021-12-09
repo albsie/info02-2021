@@ -6,6 +6,7 @@ $password = "";
 $database = "todo_list";
 $error = "";
 $success = false;
+$successUpdate = false;
 $priorityDatas = ["niedrig","mittel","hoch"];
 $selectAll = "SELECT * FROM tasks";
 
@@ -42,6 +43,10 @@ if (isset($_POST['register'])) {
 
   // 3. Das Todo auf "done" setzen und optisch darstellen.
 if (isset($_POST['done'])) {
+    $updateTask = $pdo->prepare("UPDATE tasks SET done = 1 WHERE id = :id");
+    if ($updateTask->execute([':id' => $_POST['done']])) {
+        $successUpdate = true;
+    }
     var_dump($_POST['done']);
 }
 
@@ -51,6 +56,10 @@ if (isset($_POST['done'])) {
   if (isset($_POST['delete'])) {
       var_dump($_POST['delete']);
   }
+
+  // 5. überprüfft ob die id ein int ist
+  // 6. Wenn ein Task auf done gesetzt ist, dann soll der Button verschwinden.
+  // 7. Zeige eine Status Meldung an ob der Eintrag auf erledigt gesetzt sowie gelöscht wurde.
 
 ?>
 <!DOCTYPE html>
@@ -114,6 +123,12 @@ header{
       <?php if ($success): ?>
         <div class="alert alert-success" role="alert">
         Das Todo wurde erfolgreich angelegt.
+        </div>
+      <?php endif; ?>
+
+      <?php if ($successUpdate): ?>
+        <div class="alert alert-success" role="alert">
+        Das Todo wurde erfolgreich geupdated.
         </div>
       <?php endif; ?>
 
