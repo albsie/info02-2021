@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style-type: none;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+header {
+  margin-bottom: 5vh;
+  border-bottom: 2px solid grey;
+}
+
+header nav>ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 80px;
+}
+
+header nav>ul>li>ul {
+  grid-template-columns: auto;
+  grid-template-rows: 80px;
+}
+
+main {
+  color: red;
+}
