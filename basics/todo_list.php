@@ -41,8 +41,7 @@ if (isset($_POST['register'])) {
 if (isset($_POST['done'])) {
     $id = $_POST['done'];
     try {
-        var_dump($id);
-        if (!is_int($id) && $id <= 0) {
+        if (!filter_var($id, FILTER_VALIDATE_INT) || $id <= 0) {
             throw new Exception("Ein Fehler ist passiert");
         }
         $updateTask = $pdo->prepare("UPDATE tasks SET done = 1 WHERE id = :id");
@@ -60,7 +59,7 @@ if (isset($_POST['done'])) {
   if (isset($_POST['delete'])) {
       $id = $_POST['delete'];
       try {
-          if (!is_int($id) && $id <= 0) {
+          if (!is_numeric($id) || $id <= 0) {
               throw new Exception("Ein Fehler ist passiert");
           }
           $deleteTasks = $pdo->prepare("DELETE FROM tasks WHERE id = :id");
@@ -152,6 +151,12 @@ header{
         </div>
       <?php endif; ?>
 
+      <?php if ($successDelete): ?>
+        <div class="alert alert-warning" role="alert">
+        Das Todo wurde gelöscht!
+        </div>
+      <?php endif; ?>
+
       <form class="row g-3" method="post">
         <div class="col-auto">
           <label for="todo" class="visually-hidden">Mein Todo</label>
@@ -185,9 +190,11 @@ header{
         <li><?=$value['done'] ? "<s>" . $value['name'] . "</s>" : $value['name']?></li>
         <li><?=$value['priority']?></li>
         <li>
+          <?php if (!$value['done']): ?>
           <form method="post">
             <button type="submit" name="done" value="<?=$value['id']?>" class="btn btn-success">Erledigt</button>
           </form>
+        <?php endif; ?>
         </li>
         <li>
           <form method="post">
