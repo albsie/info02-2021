@@ -11,7 +11,7 @@
       <li>
         <ul>
           <li><a href="signin">Anmeldung</a></li>
-          <li><a href="signup">Registrieren</a></li>
+          <li><a href="src/pages/auth/signup.php">Registrieren</a></li>
         </ul>
       </li>
     </ul>

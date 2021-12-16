@@ -18,10 +18,10 @@
 */
 
 
-// 7. Schreibe eine Funktion, wo ein Namen als Parameter übergeben wird. Dabei soll folgende  Ausgabe erziehlt werden: 
+// 7. Schreibe eine Funktion, wo ein Namen als Parameter übergeben wird. Dabei soll folgende  Ausgabe erziehlt werden:
 // Hallo [Wert des Parameters]
 
-/* 8. Programmiere eine Schleife um im Browser folgende Ausgabe zu erhalten: 
+/* 8. Programmiere eine Schleife um im Browser folgende Ausgabe zu erhalten:
 *
 **
 ***
@@ -37,7 +37,17 @@
 // 9. Erstelle im HTML ein Inputfeld mit einem Button. Immer wenn man auf Speichern klickt soll das Inputfeld zum vorhergehenden Wert addiert werden. Ausgabe unter dem Input Feld.
 
 
-// Jede Antwort bringt 10 Punkte außer 8. und 9.Frage bringen 15 Punkte - wenn alle 9 Fragen richtig beantwortet sind gibt es die Note 1
 
+
+// Jede Antwort bringt 10 Punkte außer 8. und 9.Frage bringen 15 Punkte - wenn alle 9 Fragen richtig beantwortet sind gibt es die Note 1
+$number = intval($_POST['btn']);
+if (isset($_POST['int'])) {
+    $number += intval($_POST['int']);
+}
 
  ?>
+ <form method="post">
+   <input type="text" name="int">
+   <button type="submit" name="btn" value="<?=$number?>">Addieren</button>
+   <div><?=$number?></div>
+ </form>

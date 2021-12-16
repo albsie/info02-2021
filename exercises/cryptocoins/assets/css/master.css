@@ -23,7 +23,8 @@ header nav>ul {
 }
 
 header nav>ul>li>ul {
-  grid-template-columns: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 80px;
 }
 
