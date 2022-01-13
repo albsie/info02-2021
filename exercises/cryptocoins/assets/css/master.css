@@ -31,10 +31,18 @@ header nav>ul {
 .menu-link a {
   text-decoration: none;
   margin: 0px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 16px;
   color: rgb(5, 15, 25);
+}
+
+.menu-link a:hover {
+  color: blue;
+}
+
+.menu-link__active a {
+  border-bottom: 2px solid gray;
 }
 
 header nav>ul>li>ul {
@@ -58,8 +66,4 @@ header nav>ul>li>ul>li {
 
 #nav-image {
   max-height: 80px;
-}
-
-main {
-  color: red;
 }

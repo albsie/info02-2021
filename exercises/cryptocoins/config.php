@@ -6,6 +6,11 @@ return array(
       'auth' => false,
       'role' => 0
       ],
+      'contact' => [
+        'path' => 'src/pages/guest/contact.php',
+        'auth' => false,
+        'role' => 0
+        ],
     'signup' => [
       'path' => 'src/pages/auth/signup.php',
       'auth' => false,

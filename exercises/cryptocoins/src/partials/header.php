@@ -6,6 +6,7 @@
         <ul>
           <li class="menu-link"><a href="home">Home</a></li>
           <li class="menu-link"><a href="aboutus">Über uns</a></li>
+          <li class="menu-link"><a href="contact">Kontakt</a></li>
         </ul>
       </li>
       <li>
