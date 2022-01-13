@@ -1,5 +1,7 @@
 <?php
 
+require_once("config/db.php");
+
 $configs = include_once('config.php');
 
 $filename = isset($_GET['filename']) ? $_GET['filename'] : 'home';

@@ -4,9 +4,35 @@ $countrys = include_once "countrys.php";
 
 if (isset($_POST['submit'])) {
     var_dump($_POST);
+
+
+    $statement = $db->prepare("
+    INSERT INTO users (
+      email, password, firstname, lastname, address, zip, country, age, gender, agb
+      ) VALUES (
+        :email, :password, :firstname, :lastname, :address, :zip, :country, :age, :gender, :agb
+        )");
+    $statement->execute([
+      'email' => $email,
+      'password' => $password,
+      'firstname' => $firstname,
+      'lastname' => $lastname,
+      'address' => $address,
+      'zip' => $zip,
+      'country' => $country,
+      'age' => $age,
+      'gender' => $gender,
+      'agb' => $agb
+    ]);
 }
 
+/*
+$querys = $db->prepare("SELECT * FROM users");
+$querys->execute();
+$users = $querys->fetchAll();
 
+var_dump($users);
+*/
 ?>
 
 <div id="signup" class="container">
