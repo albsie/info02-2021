@@ -1,12 +1,23 @@
 <?php
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "todo_list";
+
+$db = new PDO('mysql:host=' . $host . ';dbname=' . $database, $user, $password);
+
+
 
 if (isset($_POST['submitBtn'])) {
     $error = null;
+    $dbError = null;
     $password = null;
+    $email = null;
+    $name = null;
 
     if (strlen($_POST['password']) > 8) {
         if ($_POST['passwordRpt'] === $_POST['password']) {
-            $password = $_POST['password']; // password hash
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // password hash
         } else {
             $error = "Die Passwortwiederholung ist nicht korrekt!";
         }
@@ -14,10 +25,37 @@ if (isset($_POST['submitBtn'])) {
         $error = "Das Passwort ist zu kurz!";
     }
 
-    // if email
-    // if name
+    if (strlen($_POST['email']) > 3) {
+        $email = $_POST['email'];
+    } else {
+        $error = "Ihre Email Adresse ist nicht korrekt";
+    }
 
-    // if alles richtig - dann speichere in die DB
+    if (strlen($_POST['name']) > 3) {
+        $name = $_POST['name'];
+    } else {
+        $error = "Der Name ist nicht lange genug";
+    }
+
+    if ($error === null) {
+        try {
+            $statement = $db->prepare("
+        INSERT INTO users (
+          email, password, name
+          ) VALUES (
+            :email, :password, :name
+            )");
+            $statement->execute([
+          'email' => $email,
+          'password' => $password,
+          'name' => $name
+        ]);
+            $dbError = false;
+        } catch (PDOException $e) {
+            $dbError = true;
+            echo $e;
+        }
+    }
 }
 
  ?>
@@ -61,7 +99,7 @@ if (isset($_POST['submitBtn'])) {
   <form method="post">
     <div class="mb-3">
   <label for="email" class="form-label">Email address</label>
-  <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+  <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" value="<?=isset($email) ? $email : ''?>">
 </div>
 <div class="mb-3">
   <label for="password" class="form-label">Passwort</label>
@@ -73,8 +111,14 @@ if (isset($_POST['submitBtn'])) {
 </div>
 <div class="mb-3">
   <label for="name" class="form-label">Vor- und Zuname</label>
-  <input type="text" class="form-control" id="name" placeholder="Max Mustermann" name="name">
+  <input type="text" class="form-control" id="name" placeholder="Max Mustermann" name="name" value="<?=isset($name) ? $name : ''?>">
 </div>
+<?php if (isset($dbError) && $dbError === true) :?>
+  <div class="alert alert-danger" role="alert">Der Eintrag wurde nicht gespeichert</div>
+<?php endif; ?>
+<?php if (isset($dbError) && $dbError === false) :?>
+  <div class="alert alert-success" role="alert">Der Eintrag wurde erfolgreich gespeichert</div>
+<?php endif; ?>
 <div class="mb-3">
   <button type="submit" class="btn btn-success" name="submitBtn">Speichern</button>
 </div>
