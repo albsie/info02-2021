@@ -2,9 +2,39 @@
 
 $countrys = include_once "countrys.php";
 
-if (isset($_POST['submit'])) {
-    var_dump($_POST);
+$errors = [];
+$verifyString = function ($string, $min, $max, $key) use ($errors) {
+    var_dump($errors);
+    if (strlen($string) >= $min && strlen($string) <= $max) {
+        return $string;
+    } else {
+        $errors[$key] = strlen($string) >= $min ? "Der Wert ist zu lange." : "Der Wert ist zu kurz.";
+        return null;
+    }
+};
 
+if (isset($_POST['submit'])) {
+    if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $email = $_POST['email'];
+    } else {
+        $email = null;
+        $errors['email'] = "Bitte geben Sie eine korrekte E-Mail Adresse ein.";
+    }
+
+    if (preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $_POST['password'])) {
+        $password = $_POST['password'] === $_POST['passwordRpt'] ? password_hash($_POST['password'], PASSWORD_DEFAULT) :
+        $errors['passwordRpt'] = "Die Wiederholung vom Password stimmt nicht mit dem Password zusammen.";
+    } else {
+        $password = null;
+        $errors['password'] = "Das Passwort muss aus mindestens 8 Zeichen bestehen und muss mindestens eine Nummer, ein Großbuchstaben, ein Kleinbuchstaben und ein Spezialzeichen enthalten.";
+    }
+
+    $firstname = verifyString($_POST['firstname'], 2, 255, "firstname");
+    $lastname = verifyString($_POST['lastname'], 2, 255, "lastname");
+    $address = verifyString($_POST['address'], 3, 255, "address");
+
+
+    print_r($errors);
 
     $statement = $db->prepare("
     INSERT INTO users (
