@@ -1,5 +1,24 @@
 <?php
 
+if (isset($_POST['submitBtn'])) {
+    $error = null;
+    $password = null;
+
+    if (strlen($_POST['password']) > 8) {
+        if ($_POST['passwordRpt'] === $_POST['password']) {
+            $password = $_POST['password']; // password hash
+        } else {
+            $error = "Die Passwortwiederholung ist nicht korrekt!";
+        }
+    } else {
+        $error = "Das Passwort ist zu kurz!";
+    }
+
+    // if email
+    // if name
+
+    // if alles richtig - dann speichere in die DB
+}
 
  ?>
 
@@ -23,7 +42,7 @@
         max-width: clamp(500px, 80vw, 1300px);
       }
     </style>
-    <title>Hello, world!</title>
+    <title>Probe Klausur</title>
   </head>
   <body>
 
@@ -36,25 +55,28 @@
 </header>
 <main>
 <div id="main-wrapper">
-  <form>
+<?php if (isset($error)) :?>
+  <div class="alert alert-danger" role="alert"><?=$error?></div>
+<?php endif; ?>
+  <form method="post">
     <div class="mb-3">
   <label for="email" class="form-label">Email address</label>
-  <input type="email" class="form-control" id="email" placeholder="name@example.com">
+  <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
 </div>
 <div class="mb-3">
   <label for="password" class="form-label">Passwort</label>
-  <input type="password" class="form-control" id="password" placeholder="******">
+  <input type="password" class="form-control" id="password" placeholder="******" name="password">
 </div>
 <div class="mb-3">
   <label for="passwordRpt" class="form-label">Passwort Wiederholen</label>
-  <input type="password" class="form-control" id="passwordRpt" placeholder="******">
+  <input type="password" class="form-control" id="passwordRpt" placeholder="******" name="passwordRpt">
 </div>
 <div class="mb-3">
   <label for="name" class="form-label">Vor- und Zuname</label>
-  <input type="text" class="form-control" id="name" placeholder="Max Mustermann">
+  <input type="text" class="form-control" id="name" placeholder="Max Mustermann" name="name">
 </div>
 <div class="mb-3">
-  <button type="submit" class="btn btn-success">Speichern</button>
+  <button type="submit" class="btn btn-success" name="submitBtn">Speichern</button>
 </div>
   </form>
 </div>
