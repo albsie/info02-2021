@@ -36,11 +36,11 @@ if (isset($_POST['submit'])) {
     }
     $age = null;
     if (isset($_POST['age'])) {
-        $ageDate = new DateTime($_POST['age']);
-        $now = new DateTime();
+        $ageDate = date_create_from_format('Y-m-d', $_POST['age']);
+        $now = date_create_from_format('Y-m-d', date('Y-m-d'));
         $ageDiff = date_diff($ageDate, $now);
         if ($ageDiff->y >= 16 && $now > $ageDate) {
-            $age = $ageDate;
+            $age = date_format($ageDate, 'Y-m-d');
         } else {
             $errors['age'] = "Sie müssen mindestens 16 Jahre alt sein um sich regiestrieren zu können.";
         }
@@ -65,12 +65,12 @@ if (isset($_POST['submit'])) {
     } else {
         $errors['agb'] = "Bestätigen Sie die AGB's um mit der Regiestrierung fort zu fahren.";
     }
-    var_dump($agb);
+
     echo "<br>";
     echo "<pre>";
     print_r($errors);
     echo "</pre>";
-    $now = date("Y-m-d H:i:s");
+    $now = date('Y-m-d H:i:s');
     if (count($errors) === 0) {
         try {
             $statement = $db->prepare("
@@ -90,10 +90,10 @@ if (isset($_POST['submit'])) {
         ':age' => $age,
         ':gender' => $gender,
         ':agb' => $agb,
-        ':last_login' =>
+        ':last_login' => $now
       ]);
         } catch (PDOException $Exception) {
-            die($Exception->getMessage() . " | " . $Exception->getCode());
+            die($Exception->getMessage() . " | " . $Exception->getCode() . " | " . Exception->getTrace());
         }
     }
 }
