@@ -3,24 +3,16 @@
 $countrys = include_once "countrys.php";
 
 $errors = [];
-$verifyString = function ($string, $min, $max, $key) use ($errors) {
-    var_dump($errors);
-    if (strlen($string) >= $min && strlen($string) <= $max) {
-        return $string;
-    } else {
-        $errors[$key] = strlen($string) >= $min ? "Der Wert ist zu lange." : "Der Wert ist zu kurz.";
-        return null;
-    }
-};
 
 if (isset($_POST['submit'])) {
+    $email = null;
     if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $email = $_POST['email'];
     } else {
         $email = null;
         $errors['email'] = "Bitte geben Sie eine korrekte E-Mail Adresse ein.";
     }
-
+    $password = null;
     if (preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $_POST['password'])) {
         $password = $_POST['password'] === $_POST['passwordRpt'] ? password_hash($_POST['password'], PASSWORD_DEFAULT) :
         $errors['passwordRpt'] = "Die Wiederholung vom Password stimmt nicht mit dem Password zusammen.";
@@ -29,32 +21,95 @@ if (isset($_POST['submit'])) {
         $errors['password'] = "Das Passwort muss aus mindestens 8 Zeichen bestehen und muss mindestens eine Nummer, ein Großbuchstaben, ein Kleinbuchstaben und ein Spezialzeichen enthalten.";
     }
 
-    $firstname = verifyString($_POST['firstname'], 2, 255, "firstname");
-    $lastname = verifyString($_POST['lastname'], 2, 255, "lastname");
-    $address = verifyString($_POST['address'], 3, 255, "address");
+    $firstname = verifyString(2, 255, "firstname");
+    $lastname = verifyString(2, 255, "lastname");
+    $address = verifyString(3, 255, "address");
+    $zip = verifyString(4, 6, "zip");
+    $country = 0;
+    if (isset($_POST['country'])) {
+        $countryVal = filter_var($_POST['country'], FILTER_VALIDATE_INT);
+        if ($countryVal > 0 && $countryVal <= count($countrys)) {
+            $country = $countryVal;
+        } else {
+            $errors['country'] = "Bitte wählen Sie ein Land aus";
+        }
+    }
+    $age = null;
+    if (isset($_POST['age'])) {
+        $ageDate = new DateTime($_POST['age']);
+        $now = new DateTime();
+        $ageDiff = date_diff($ageDate, $now);
+        if ($ageDiff->y >= 16 && $now > $ageDate) {
+            $age = $ageDate;
+        } else {
+            $errors['age'] = "Sie müssen mindestens 16 Jahre alt sein um sich regiestrieren zu können.";
+        }
+    } else {
+        $errors['age'] = "Wählen Sie ihr Geburtsdatum aus.";
+    }
 
+    $gender= null;
+    if (isset($_POST['gender'])) {
+        $genderValues = ['m', 'w', 'o'];
+        if (in_array($_POST['gender'], $genderValues)) {
+            $gender = $_POST['gender'];
+        } else {
+            $errors['gender'] = "Die Auswahl hat nicht funktioniert.";
+        }
+    } else {
+        $errors['gender'] = "Wählen Sie ihr Geschlecht.";
+    }
+    $agb= null;
+    if ($_POST['agb'] === '1') {
+        $agb = new DateTime();
+    } else {
+        $errors['agb'] = "Bestätigen Sie die AGB's um mit der Regiestrierung fort zu fahren.";
+    }
 
+    var_dump($_POST['agb']);
+
+    echo "<br>";
+    echo "<pre>";
     print_r($errors);
+    echo "</pre>";
 
-    $statement = $db->prepare("
-    INSERT INTO users (
-      email, password, firstname, lastname, address, zip, country, age, gender, agb
-      ) VALUES (
-        :email, :password, :firstname, :lastname, :address, :zip, :country, :age, :gender, :agb
-        )");
-    $statement->execute([
-      'email' => $email,
-      'password' => $password,
-      'firstname' => $firstname,
-      'lastname' => $lastname,
-      'address' => $address,
-      'zip' => $zip,
-      'country' => $country,
-      'age' => $age,
-      'gender' => $gender,
-      'agb' => $agb
-    ]);
+    if (count($errors) === 0) {
+        try {
+            $statement = $db->prepare("
+      INSERT INTO users (
+        email, password, firstname, lastname, address, zip, country, age, gender, agb
+        ) VALUES (
+          :email, :password, :firstname, :lastname, :address, :zip, :country, :age, :gender, :agb
+          )");
+            $statement->execute([
+        'email' => $email,
+        'password' => $password,
+        'firstname' => $firstname,
+        'lastname' => $lastname,
+        'address' => $address,
+        'zip' => $zip,
+        'country' => $country,
+        'age' => $age,
+        'gender' => $gender,
+        'agb' => $agb
+      ]);
+        } catch (PDOException $Exception) {
+            die($Exception->getMessage());
+        }
+    }
 }
+
+function verifyString($min, $max, $key)
+{
+    global $errors;
+    $string = $_POST[$key];
+    if (strlen($string) >= $min && strlen($string) <= $max) {
+        return $string;
+    } else {
+        $errors[$key] = strlen($string) >= $min ? "Der Wert ist zu lange." : "Der Wert ist zu kurz.";
+        return null;
+    }
+};
 
 /*
 $querys = $db->prepare("SELECT * FROM users");
