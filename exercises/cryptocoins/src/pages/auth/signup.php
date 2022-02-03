@@ -59,42 +59,41 @@ if (isset($_POST['submit'])) {
     } else {
         $errors['gender'] = "Wählen Sie ihr Geschlecht.";
     }
-    $agb= null;
+    $agb= "";
     if ($_POST['agb'] === '1') {
-        $agb = new DateTime();
+        $agb = date("Y-m-d H:i:s");
     } else {
         $errors['agb'] = "Bestätigen Sie die AGB's um mit der Regiestrierung fort zu fahren.";
     }
-
-    var_dump($_POST['agb']);
-
+    var_dump($agb);
     echo "<br>";
     echo "<pre>";
     print_r($errors);
     echo "</pre>";
-
+    $now = date("Y-m-d H:i:s");
     if (count($errors) === 0) {
         try {
             $statement = $db->prepare("
       INSERT INTO users (
-        email, password, firstname, lastname, address, zip, country, age, gender, agb
+        email, password, firstname, lastname, address, zip, country, age, gender, agb, last_login
         ) VALUES (
-          :email, :password, :firstname, :lastname, :address, :zip, :country, :age, :gender, :agb
+          :email, :password, :firstname, :lastname, :address, :zip, :country, :age, :gender, :agb, :last_login
           )");
             $statement->execute([
-        'email' => $email,
-        'password' => $password,
-        'firstname' => $firstname,
-        'lastname' => $lastname,
-        'address' => $address,
-        'zip' => $zip,
-        'country' => $country,
-        'age' => $age,
-        'gender' => $gender,
-        'agb' => $agb
+        ':email' => $email,
+        ':password' => $password,
+        ':firstname' => $firstname,
+        ':lastname' => $lastname,
+        ':address' => $address,
+        ':zip' => $zip,
+        ':country' => $country,
+        ':age' => $age,
+        ':gender' => $gender,
+        ':agb' => $agb,
+        ':last_login' =>
       ]);
         } catch (PDOException $Exception) {
-            die($Exception->getMessage());
+            die($Exception->getMessage() . " | " . $Exception->getCode());
         }
     }
 }
@@ -111,13 +110,6 @@ function verifyString($min, $max, $key)
     }
 };
 
-/*
-$querys = $db->prepare("SELECT * FROM users");
-$querys->execute();
-$users = $querys->fetchAll();
-
-var_dump($users);
-*/
 ?>
 
 <div id="signup" class="container">
