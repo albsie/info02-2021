@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
     } else {
         $password = null;
         $errors['password'] = "Das Passwort muss aus mindestens 8 Zeichen bestehen und muss mindestens eine Nummer, ein Großbuchstaben, ein Kleinbuchstaben und ein Spezialzeichen enthalten.";
+        $errors['passwordRpt'] = $errors['password'];
     }
 
     $firstname = verifyString(2, 255, "firstname");
@@ -66,10 +67,6 @@ if (isset($_POST['submit'])) {
         $errors['agb'] = "Bestätigen Sie die AGB's um mit der Regiestrierung fort zu fahren.";
     }
 
-    echo "<br>";
-    echo "<pre>";
-    print_r($errors);
-    echo "</pre>";
     $now = date('Y-m-d H:i:s');
     if (count($errors) === 0) {
         try {
@@ -125,31 +122,49 @@ function verifyString($min, $max, $key)
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="********" name="password" value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+      <input type="password" class="form-control <?=isset($errors['password']) ? 'is-invalid' : (isset($_POST['password']) ? 'is-valid' : '')?>" id="password" placeholder="********" name="password" value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+      <?php if (isset($errors['password'])): ?>
+        <div id="validationPassword" class="invalid-feedback"><?=$errors['password']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="passwordRpt" class="form-label">Password Wiederholen</label>
-      <input type="password" class="form-control" id="passwordRpt" placeholder="********" name="passwordRpt" value="<?= isset($_POST['passwordRpt']) ? $_POST['passwordRpt'] : '' ?>">
+      <input type="password" class="form-control <?=isset($errors['passwordRpt']) ? 'is-invalid' : (isset($_POST['passwordRpt']) ? 'is-valid' : '')?>" id="passwordRpt" placeholder="********" name="passwordRpt" value="<?= isset($_POST['passwordRpt']) ? $_POST['passwordRpt'] : '' ?>">
+      <?php if (isset($errors['passwordRpt'])): ?>
+        <div id="validationPasswordRpt" class="invalid-feedback"><?=$errors['passwordRpt']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="firstname" class="form-label">Vorname</label>
-      <input type="text" class="form-control" id="firstname" placeholder="Max" name="firstname" value="<?= isset($_POST['firstname']) ? $_POST['firstname'] : '' ?>">
+      <input type="text" class="form-control <?=isset($errors['firstname']) ? 'is-invalid' : (isset($_POST['firstname']) ? 'is-valid' : '')?>" id="firstname" placeholder="Max" name="firstname" value="<?= isset($_POST['firstname']) ? $_POST['firstname'] : '' ?>">
+      <?php if (isset($errors['firstname'])): ?>
+        <div id="validationFirstname" class="invalid-feedback"><?=$errors['firstname']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="lastname" class="form-label">Nachname</label>
-      <input type="text" class="form-control" id="lastname" placeholder="Mustermann" name="lastname" value="<?= isset($_POST['lastname']) ? $_POST['lastname'] : '' ?>">
+      <input type="text" class="form-control <?=isset($errors['lastname']) ? 'is-invalid' : (isset($_POST['lastname']) ? 'is-valid' : '')?>" id="lastname" placeholder="Mustermann" name="lastname" value="<?= isset($_POST['lastname']) ? $_POST['lastname'] : '' ?>">
+      <?php if (isset($errors['lastname'])): ?>
+        <div id="validationLastname" class="invalid-feedback"><?=$errors['lastname']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="address" class="form-label">Adresse</label>
-      <input type="text" class="form-control" id="address" placeholder="Mustergasse 8" name="address" value="<?= isset($_POST['address']) ? $_POST['address'] : '' ?>">
+      <input type="text" class="form-control <?=isset($errors['address']) ? 'is-invalid' : (isset($_POST['address']) ? 'is-valid' : '')?>" id="address" placeholder="Mustergasse 8" name="address" value="<?= isset($_POST['address']) ? $_POST['address'] : '' ?>">
+      <?php if (isset($errors['address'])): ?>
+        <div id="validationAddress" class="invalid-feedback"><?=$errors['address']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="zip" class="form-label">Postleitzahl</label>
-      <input type="text" class="form-control" id="zip" placeholder="83022" name="zip" value="<?= isset($_POST['zip']) ? $_POST['zip'] : '' ?>">
+      <input type="text" class="form-control <?=isset($errors['zip']) ? 'is-invalid' : (isset($_POST['zip']) ? 'is-valid' : '')?>" id="zip" placeholder="83022" name="zip" value="<?= isset($_POST['zip']) ? $_POST['zip'] : '' ?>">
+      <?php if (isset($errors['zip'])): ?>
+        <div id="validationZip" class="invalid-feedback"><?=$errors['zip']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="zip" class="form-label">Land</label>
-      <select class="form-select" name="country">
+      <select class="form-select <?=isset($errors['country']) ? 'is-invalid' : (isset($_POST['country']) ? 'is-valid' : '')?>" name="country" aria-describedby="validationCountry">
 
         <?php
         $country = isset($_POST['country']) ? $_POST['country'] : 0;
@@ -160,10 +175,16 @@ function verifyString($min, $max, $key)
         <?php endforeach; ?>
 
       </select>
+      <?php if (isset($errors['country'])): ?>
+        <div id="validationCountry" class="invalid-feedback"><?=$errors['country']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="age" class="form-label">Geburtsdatum</label>
-      <input type="date" class="form-control" id="age" placeholder="Max" name="age" value="<?= isset($_POST['age']) ? $_POST['age'] : '' ?>">
+      <input type="date" class="form-control <?=isset($errors['age']) ? 'is-invalid' : (isset($_POST['age']) ? 'is-valid' : '')?>" id="age" placeholder="Max" name="age" value="<?= isset($_POST['age']) ? $_POST['age'] : '' ?>">
+      <?php if (isset($errors['age'])): ?>
+        <div id="validationAge" class="invalid-feedback"><?=$errors['age']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label class="form-label">Wählen Sie ihr Geschlecht</label>
@@ -173,22 +194,25 @@ function verifyString($min, $max, $key)
        ?>
 
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="gender" value="m" <?=$gender === 'm' ? 'checked' : ''?> id="man">
+        <input class="form-check-input <?=isset($errors['gender']) ? 'is-invalid' : (isset($_POST['gender']) ? 'is-valid' : '')?>" type="radio" name="gender" value="m" <?=$gender === 'm' ? 'checked' : ''?> id="man">
         <label class="form-check-label" for="man">
         Mann
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="gender" value="w" <?=$gender === 'w' ? 'checked' : ''?> id="woman">
+        <input class="form-check-input <?=isset($errors['gender']) ? 'is-invalid' : (isset($_POST['gender']) ? 'is-valid' : '')?>" type="radio" name="gender" value="w" <?=$gender === 'w' ? 'checked' : ''?> id="woman">
         <label class="form-check-label" for="woman">
         Frau
       </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="gender" value="o" <?=$gender === 'o' ? 'checked' : ''?> id="other">
+        <input class="form-check-input <?=isset($errors['gender']) ? 'is-invalid' : (isset($_POST['gender']) ? 'is-valid' : '')?>" type="radio" name="gender" value="o" <?=$gender === 'o' ? 'checked' : ''?> id="other">
         <label class="form-check-label" for="other">
         Divers
       </label>
+      <?php if (isset($errors['gender'])): ?>
+        <div id="validationGender" class="invalid-feedback"><?=$errors['gender']?></div>
+      <?php endif ?>
       </div>
     </div>
     <div class="mb-3">
@@ -199,7 +223,10 @@ function verifyString($min, $max, $key)
          ?>
 
         <input type="hidden" name="agb" value="0">
-        <input class="form-check-input" type="checkbox" value="1" id="chkbox" name="agb" <?= $agb == 1 ? 'checked' : ''?>>
+        <input class="form-check-input <?=isset($errors['agb']) ? 'is-invalid' : (isset($_POST['agb']) ? 'is-valid' : '')?>" type="checkbox" value="1" id="chkbox" name="agb" <?= $agb == 1 ? 'checked' : ''?>>
+        <?php if (isset($errors['agb'])): ?>
+          <div id="validationAgb" class="invalid-feedback"><?=$errors['agb']?></div>
+        <?php endif ?>
         <label class="form-check-label" for="chkbox">
         Hiermit bestätige ich die allgemeinen Geschäftsbedingungen.
       </label>
