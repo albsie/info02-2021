@@ -32,7 +32,7 @@
 123456789
 */
 
-// 9. Erstelle im HTML ein Inputfeld mit einem Button. Immer wenn man auf Speichern klickt soll das Inputfeld zum vorhergehenden Wert addiert werden. Ausgabe unter dem Input Feld.
+// 9. Erstelle im HTML ein Inputfeld mit einem Button(siehe HTML unten). Immer wenn man auf Speichern klickt soll das Inputfeld zum vorhergehenden Wert addiert werden. Ausgabe unter dem Input Feld.
 // Tipp: gib das Ergebnis vom POST Request immer wieder mit, dann kannst du es dazu addieren.
 
 

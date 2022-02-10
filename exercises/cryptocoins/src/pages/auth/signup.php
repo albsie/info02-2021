@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
         }
     }
     $age = null;
-    if (isset($_POST['age'])) {
+    if (isset($_POST['age']) && $_POST['age'] !== "") {
         $ageDate = date_create_from_format('Y-m-d', $_POST['age']);
         $now = date_create_from_format('Y-m-d', date('Y-m-d'));
         $ageDiff = date_diff($ageDate, $now);
@@ -118,7 +118,10 @@ function verifyString($min, $max, $key)
   <form method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
+      <input type="email" class="form-control <?=isset($errors['email']) ? 'is-invalid' : (isset($_POST['email']) ? 'is-valid' : '')?>" id="email" placeholder="name@example.com" name="email" value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
+      <?php if (isset($errors['email'])): ?>
+        <div id="validationEmail" class="invalid-feedback"><?=$errors['email']?></div>
+      <?php endif ?>
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
