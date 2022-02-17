@@ -26,6 +26,11 @@ return array(
       'auth' => true,
       'role' => 1
       ],
+      'settings' => [
+        'path' => 'src/pages/auth/settings.php',
+        'auth' => false,
+        'role' => 0
+        ]
         // must be the last inserd
     'errorPage' => [
       'path' => 'src/pages/error.php',

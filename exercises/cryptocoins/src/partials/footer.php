@@ -1,5 +1,5 @@
 <footer>
-  Footer
+  <!-- Erstelle einen Footer -->
 </footer>
 </body>
 
