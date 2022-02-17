@@ -92,6 +92,21 @@ if (isset($_POST['submit'])) {
         } catch (PDOException $Exception) {
             die($Exception->getMessage() . " | " . $Exception->getCode() . " | " . Exception->getTrace());
         }
+
+        $affected_rows = $statement->rowCount();
+        if ($affected_rows == 1) {
+            session_start();
+            $lastId = $db->lastInsertId();
+
+            $_SESSION['user_id'] = $lastId;
+            $_SESSION['firstname'] = $firstname;
+            $_SESSION['lastname'] = $lastname;
+            $_SESSION['email'] = $email;
+            $_SESSION['last_login'] = $now;
+            echo "<pre>";
+            print_r($_SESSION);
+            echo "</pre>";
+        }
     }
 }
 
